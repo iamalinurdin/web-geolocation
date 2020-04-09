@@ -3,21 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ config('app.name', 'Laravel') }}</title>
 
-  <!-- Scripts -->
+  {{-- Scripts --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+  <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"type="text/javascript" charset="utf-8"></script>
+  <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
 
-  <!-- Fonts -->
+  {{-- CSS --}}
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-  <!-- Styles -->
+  <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
   @stack('style')
 
 </head>
@@ -79,7 +81,11 @@
     </main>
   </div>
   
-<script src="{{ asset('js/app.js') }}"></script>
-@stack('script')
+  <script src="{{ asset('js/app.js') }}"></script>
+  <script src="{{ asset('js/here.js') }}"></script>
+  @stack('script')
+  <script>
+    window.hereApiKey = "{{ env('HERE_API_KEY') }}"
+  </script>
 </body>
 </html>
