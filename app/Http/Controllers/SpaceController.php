@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Space;
 
 class SpaceController extends Controller
 {
@@ -18,7 +19,9 @@ class SpaceController extends Controller
      */
     public function index()
     {
-        return view('pages.space.index');
+        return view('pages.space.index', [
+            'spaces' => Space::all(),
+        ]);
     }
 
     /**
@@ -39,7 +42,9 @@ class SpaceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->user()->spaces()->create($request->all());
+
+        return redirect()->route('space.index')->withSuccess('Alamat baru berhasil ditambahkan');
     }
 
     /**

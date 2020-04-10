@@ -64,7 +64,7 @@ if (navigator.geolocation) {
                     pointer = evt.currentPointer
     
                 if (target instanceof H.map.Marker) {
-                    target.setGeometry(map.geoToScreen(pointer.viewportX - target['offset'].x, pointer.viewportY - target['offset'].y))
+                    target.setGeometry(map.screenToGeo(pointer.viewportX - target['offset'].x, pointer.viewportY - target['offset'].y))
                 }
             }, false);
     
@@ -73,13 +73,13 @@ if (navigator.geolocation) {
     
                 if (target instanceof H.map.Marker) {
                     behavior.enable()
-                    let resultCoord = map.geoToScreen(
+                    let resultCoord = map.screenToGeo(
                         evt.currentPointer.viewportX,
                         evt.currentPointer.viewportY
                     )
     
-                    lat.value = resultCoord.lat
-                    lng.value = resultCoord.lng
+                    lat.value = resultCoord.lat.toFixed(5)
+                    lng.value = resultCoord.lng.toFixed(5)
                 }
             }, false);
         }
