@@ -69,9 +69,16 @@ class SpaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $space = Space::findOrFail($id);
+        if ($space->user_id != $request->user()->id) {
+            return redirect()->route('home');
+        }
+
+        return view('pages.space.edit', [
+            'space' => $space,
+        ]);
     }
 
     /**
@@ -83,7 +90,9 @@ class SpaceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $space = Space::findOrFail($id);
+        $space->update($request->all());
+        return redirect()->route('home');
     }
 
     /**
@@ -92,8 +101,13 @@ class SpaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $space = Space::findOrFail($id);
+        if ($space->user_id != $request->user()->id) {
+            return redirect()->route('home');
+        }
+        $space->delete();
+        return redirect()->route('home');
     }
 }
