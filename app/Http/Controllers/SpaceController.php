@@ -47,6 +47,11 @@ class SpaceController extends Controller
         return redirect()->route('space.index')->withSuccess('Alamat baru berhasil ditambahkan');
     }
 
+    public function browse()
+    {
+        return view('pages.space.browse');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -55,7 +60,7 @@ class SpaceController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

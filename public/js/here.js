@@ -87,6 +87,51 @@ if (navigator.geolocation) {
         if (window.action == 'submit') {
             addDraggable(map, behavior)
         }
+
+        // Browse Location
+        let spaces = []
+        const fetchSpaces = function (lat, lng, rad) {
+            return new Promise((resolve, reject) => {
+                resolve(
+                    fetch(`http://localhost:8000/api/spaces?lat=${lat}&lng=${lng}&rad=${rad}`)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            data.forEach((val, index) => {
+                                // console.log(val)
+                                let marker = new H.map.Marker({
+                                    lat: val.latitude, lng: val.longitude
+                                })
+                                spaces.push(marker)
+                            })
+                        })
+                )
+            })
+        }
+
+        function clearSpace () {
+            map.removeObjects(spaces)
+            spaces = []
+        }
+
+        function init (lat, lng, rad) {
+            clearSpace()
+            fetchSpaces(lat, lng, rad)
+                .then(() => {
+                    map.addObjects(spaces)
+                })
+        }
+
+        if (window.action == 'browse') {
+            map.addEventListener('dragend', function (ev) {
+                let resultCoord = map.screenToGeo(
+                    ev.currentPointer.viewportX,
+                    ev.currentPointer.viewportY,
+                )
+                init(resultCoord.lat, resultCoord.lng, 40)
+            }, false)
+
+            init(objLocalCoord.lat, objLocalCoord.lng, 40)
+        }
     })
 } else {
     console.error('Geolocation not support in this browser.')

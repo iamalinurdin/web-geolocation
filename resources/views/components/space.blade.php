@@ -12,7 +12,7 @@
         {{-- List Btn End --}}
 
         {{-- Globe Btn --}}
-        <a href="#" class="btn btn-secondary">
+        <a href="{{ route('space.browse') }}" class="btn btn-secondary">
           <i class="fa fa-globe"></i>
         </a>
         {{-- Globe Btn End --}}
