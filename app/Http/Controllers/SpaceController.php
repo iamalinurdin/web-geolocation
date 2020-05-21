@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Space;
+use Storage;
 
 class SpaceController extends Controller
 {
@@ -42,7 +43,17 @@ class SpaceController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->spaces()->create($request->all());
+        $space = $request->user()->spaces()->create($request->except('photo'));
+        $photos = [];
+        foreach ($request->file('photo') as $photo) {
+            $path = Storage::disk('public')->putFile('spaces', $photo);
+            $photos[] = [
+                'space_id' => $space->id,
+                'path' => $path,
+            ];
+        }
+
+        $space->photos()->insert($photos);
 
         return redirect()->route('space.index')->withSuccess('Alamat baru berhasil ditambahkan');
     }
@@ -108,6 +119,11 @@ class SpaceController extends Controller
         if ($space->user_id != $request->user()->id) {
             return redirect()->route('home');
         }
+
+        foreach($space->photos as $photo) {
+            Storage::delete('public/'.$photo->path);
+        }
+
         $space->delete();
         return redirect()->route('home');
     }
